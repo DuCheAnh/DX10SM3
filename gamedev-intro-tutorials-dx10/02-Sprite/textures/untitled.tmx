@@ -4,7 +4,7 @@
   <image source="world-1-1.png" width="1392" height="1440"/>
  </tileset>
  <tileset firstgid="871" name="world-1-1" tilewidth="48" tileheight="48" tilecount="870" columns="29">
-  <image source="../../../../../../Downloads/gamedev-intro-tutorials-dx10/gamedev-intro-tutorials-dx10/02-Sprite/textures/world-1-1.png" trans="ff00ff" width="1392" height="1440"/>
+  <image source="world-1-1.png" trans="ff00ff" width="1392" height="1440"/>
  </tileset>
  <layer id="1" name="demo" width="38" height="26">
   <data encoding="csv">
