@@ -70,6 +70,9 @@
     <Filter Include="Framework\TinyXml">
       <UniqueIdentifier>{6a65792e-45c9-4bdc-afa2-7c72f58fb9ec}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\CollidableObject\Pipe">
+      <UniqueIdentifier>{4d455d21-5ff7-4d72-83fc-cbfc5516510a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -152,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="TileSet.cpp">
       <Filter>Framework\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Unit\CollidableObject\Pipe</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -238,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="TileSet.h">
       <Filter>Framework\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Unit\CollidableObject\Pipe</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
