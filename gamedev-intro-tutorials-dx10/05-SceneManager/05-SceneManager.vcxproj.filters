@@ -76,6 +76,9 @@
     <Filter Include="Unit\CollidableObject\QuestionBrick">
       <UniqueIdentifier>{55b66d3c-092b-4f6a-9da5-24a43cab3086}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\CollidableObject\GhostPlatform">
+      <UniqueIdentifier>{bd424ed7-cc5a-43fb-93ce-a3cb184dd901}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -164,6 +167,9 @@
     </ClCompile>
     <ClCompile Include="QuestionBrick.cpp">
       <Filter>Unit\CollidableObject\QuestionBrick</Filter>
+    </ClCompile>
+    <ClCompile Include="GhostPlatform.cpp">
+      <Filter>Unit\CollidableObject\GhostPlatform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="QuestionBrick.h">
       <Filter>Unit\CollidableObject\QuestionBrick</Filter>
+    </ClInclude>
+    <ClInclude Include="GhostPlatform.h">
+      <Filter>Unit\CollidableObject\GhostPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

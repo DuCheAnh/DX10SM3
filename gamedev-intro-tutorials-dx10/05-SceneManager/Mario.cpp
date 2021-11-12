@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "QuestionBrick.h"
+#include "GhostPlatform.h"
 
 #include "Collision.h"
 
@@ -38,17 +39,28 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CGhostPlatform*>(e->obj))
+	{
+		CGhostPlatform* gplat = dynamic_cast<CGhostPlatform*>(e->obj);
+		if (e->ny < 0)
+		{
+			gplat->SetBlocking(1);
+			//bounce
+			this->y -= 7;
+		}
+		else
+			gplat->SetBlocking(0);
+	}
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
 		if (e->ny < 0) isOnPlatform = true;
 	}
-	else 
-	if (e->nx != 0 && e->obj->IsBlocking())
-	{
-		vx = 0;
-	}
-
+	else
+		if (e->nx != 0 && e->obj->IsBlocking())
+		{
+			vx = 0;
+		}
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
@@ -57,6 +69,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQBrick(e);
+	else if (dynamic_cast<CGhostPlatform*>(e->obj))
+		OnCollisionWithGPlatform(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -101,6 +115,11 @@ void CMario::OnCollisionWithQBrick(LPCOLLISIONEVENT e)
 	{
 		qbrick->SetState(QBRICK_STATE_BROKEN);
 	}
+}void CMario::OnCollisionWithGPlatform(LPCOLLISIONEVENT e)
+{
+
+	// jump on top >> kill Goomba and deflect a bit 
+	
 }
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {

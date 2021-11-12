@@ -7,6 +7,7 @@
 #include "Textures.h"
 #include "Sprites.h"
 #include "Portal.h"
+#include "GhostPlatform.h"
 #include "Coin.h"
 #include "QuestionBrick.h"
 #include "Platform.h"
@@ -130,6 +131,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int length = atoi(tokens[5].c_str());
 
 		obj = new CPlatform(
+			x, y,
+			cell_width, cell_height, length
+		);
+
+		break;
+	}case OBJECT_TYPE_GPLATFORM:
+	{
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+
+		obj = new CGhostPlatform(
 			x, y,
 			cell_width, cell_height, length
 		);
