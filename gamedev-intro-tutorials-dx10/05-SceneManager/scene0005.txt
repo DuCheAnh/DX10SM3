@@ -5,6 +5,7 @@ coin.txt
 cloud.txt
 brick.txt
 question_brick.txt
+goomba.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -15,6 +16,11 @@ question_brick.txt
 # MARIO
 0	10	10
 
+#GOOMBA
+2	244	160
+2	528	160
+2	833	160
+2	881	160
 #COIN
 4	1072	80
 4	1104	48
