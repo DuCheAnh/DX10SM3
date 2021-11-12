@@ -14,6 +14,16 @@ using namespace std;
 #define ID_TEX_BBOX -100		// special texture to draw object bounding box
 #define BBOX_ALPHA 0.25f		// Bounding box transparency
 
+enum class Tag
+{
+	ghostplatform,
+	enemy,
+	portal,
+	block,
+	pickable,
+	player,
+	tail
+};
 class CGameObject
 {
 protected:
@@ -31,6 +41,7 @@ protected:
 	bool isDeleted; 
 
 public: 
+	Tag EntityTag;
 	void SetPosition(float x, float y) { this->x = x, this->y = y; }
 	void SetSpeed(float vx, float vy) { this->vx = vx, this->vy = vy; }
 	void GetPosition(float &x, float &y) { x = this->x; y = this->y; }

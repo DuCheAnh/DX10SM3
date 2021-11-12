@@ -20,6 +20,7 @@ public:
 		this->length = length;
 		this->cellWidth = cell_width;
 		this->cellHeight = cell_height;
+		EntityTag = Tag::block;
 	}
 
 	void Render();

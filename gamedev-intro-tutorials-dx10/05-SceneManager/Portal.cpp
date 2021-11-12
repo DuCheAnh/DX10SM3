@@ -9,6 +9,7 @@ CPortal::CPortal(float l, float t, float r, float b, int scene_id )
 	y = t;
 	width = r - l;
 	height = b - t;
+	EntityTag = Tag::portal;
 }
 
 void CPortal::RenderBoundingBox()
