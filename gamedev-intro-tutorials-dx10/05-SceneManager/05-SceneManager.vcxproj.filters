@@ -73,6 +73,9 @@
     <Filter Include="Unit\CollidableObject\Pipe">
       <UniqueIdentifier>{4d455d21-5ff7-4d72-83fc-cbfc5516510a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\CollidableObject\QuestionBrick">
+      <UniqueIdentifier>{55b66d3c-092b-4f6a-9da5-24a43cab3086}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
