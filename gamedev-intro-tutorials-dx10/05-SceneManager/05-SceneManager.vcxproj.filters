@@ -162,6 +162,9 @@
     <ClCompile Include="Pipe.cpp">
       <Filter>Unit\CollidableObject\Pipe</Filter>
     </ClCompile>
+    <ClCompile Include="QuestionBrick.cpp">
+      <Filter>Unit\CollidableObject\QuestionBrick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -250,6 +253,9 @@
     </ClInclude>
     <ClInclude Include="Pipe.h">
       <Filter>Unit\CollidableObject\Pipe</Filter>
+    </ClInclude>
+    <ClInclude Include="QuestionBrick.h">
+      <Filter>Unit\CollidableObject\QuestionBrick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
