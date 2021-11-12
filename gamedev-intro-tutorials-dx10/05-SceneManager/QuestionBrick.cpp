@@ -7,6 +7,9 @@ void CQuestionBrick::Render()
 	//RenderBoundingBox();
 }
 
+void CQuestionBrick::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+}
 void CQuestionBrick::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
 	l = x - BRICK_BBOX_WIDTH / 2;
