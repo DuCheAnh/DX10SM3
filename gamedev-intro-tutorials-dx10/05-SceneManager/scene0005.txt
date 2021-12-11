@@ -14,8 +14,9 @@ goomba.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	10	10
+0	1800	10
 
+1	1900	80
 #GOOMBA
 2	244	160
 2	528	160

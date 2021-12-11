@@ -1,5 +1,5 @@
 #include "Goomba.h"
-
+#include "debug.h"
 CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 {
 	this->ax = 0;

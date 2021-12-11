@@ -9,7 +9,7 @@
 #include "Portal.h"
 #include "QuestionBrick.h"
 #include "GhostPlatform.h"
-
+#include "Brick.h"
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
@@ -46,7 +46,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			gplat->SetBlocking(1);
 			//bounce
-			this->y -= 7;
+			this->y -= 8;
 		}
 		else
 			gplat->SetBlocking(0);
@@ -69,6 +69,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CQuestionBrick*>(e->obj))
 		OnCollisionWithQBrick(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CGhostPlatform*>(e->obj))
 		OnCollisionWithGPlatform(e);
 }
@@ -115,7 +117,20 @@ void CMario::OnCollisionWithQBrick(LPCOLLISIONEVENT e)
 	{
 		qbrick->SetState(QBRICK_STATE_BROKEN);
 	}
-}void CMario::OnCollisionWithGPlatform(LPCOLLISIONEVENT e)
+}
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+	
+	if (e->ny > 0)
+	{
+		if (brick->GetState() != BRICK_STATE_BROKEN) 
+		{
+			brick->SetState(BRICK_STATE_BROKEN);
+		}
+	}
+}
+void CMario::OnCollisionWithGPlatform(LPCOLLISIONEVENT e)
 {
 
 	// jump on top >> kill Goomba and deflect a bit 
