@@ -79,6 +79,12 @@
     <Filter Include="Unit\CollidableObject\GhostPlatform">
       <UniqueIdentifier>{bd424ed7-cc5a-43fb-93ce-a3cb184dd901}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Damager">
+      <UniqueIdentifier>{d2ea1049-332c-4143-aa99-2f0914e9b3a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\Damager\Fireball">
+      <UniqueIdentifier>{4374a052-8a14-4763-92b3-5a083fc1d169}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -170,6 +176,9 @@
     </ClCompile>
     <ClCompile Include="GhostPlatform.cpp">
       <Filter>Unit\CollidableObject\GhostPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Fireball.cpp">
+      <Filter>Unit\Damager\Fireball</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="GhostPlatform.h">
       <Filter>Unit\CollidableObject\GhostPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Fireball.h">
+      <Filter>Unit\Damager\Fireball</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

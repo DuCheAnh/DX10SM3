@@ -6,6 +6,7 @@ cloud.txt
 brick.txt
 question_brick.txt
 goomba.txt
+fireball.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -16,7 +17,7 @@ goomba.txt
 # MARIO
 0	1800	10
 
-1	1900	80
+9	1900	80
 #GOOMBA
 2	244	160
 2	528	160

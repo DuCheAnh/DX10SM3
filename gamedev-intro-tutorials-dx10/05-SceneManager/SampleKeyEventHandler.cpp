@@ -5,6 +5,8 @@
 
 #include "Mario.h"
 #include "PlayScene.h"
+#include "GameObject.h"
+#include "Fireball.h"
 
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
@@ -30,6 +32,12 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_R: // reset
 		//Reload();
+		CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+		CGameObject* obj = NULL;
+		float cx, cy;
+		mario->GetPosition(cx, cy);
+		obj = new CFireball(cx + 16, cy);
+		((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->AddObject(obj);
 		break;
 	}
 }

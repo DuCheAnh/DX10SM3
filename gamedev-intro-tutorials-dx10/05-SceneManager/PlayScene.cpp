@@ -13,7 +13,7 @@
 #include "Platform.h"
 #include "Pipe.h"
 #include "SampleKeyEventHandler.h"
-
+#include "Fireball.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
@@ -122,6 +122,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_QBRICK: obj = new CQuestionBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case 9: obj = new CFireball(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{
