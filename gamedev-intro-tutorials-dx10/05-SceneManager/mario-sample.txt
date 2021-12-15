@@ -18,3 +18,4 @@ height	240
 10	textures\enemies.png
 20	textures\tile_map.png
 30	textures\misc.png
+40	textures\bros_enemies.png

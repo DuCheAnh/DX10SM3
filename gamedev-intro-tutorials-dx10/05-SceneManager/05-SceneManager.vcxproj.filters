@@ -85,6 +85,9 @@
     <Filter Include="Unit\Damager\Fireball">
       <UniqueIdentifier>{4374a052-8a14-4763-92b3-5a083fc1d169}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Mob\Plant">
+      <UniqueIdentifier>{a041c327-a248-4d43-91a9-fb842a59fd5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -179,6 +182,9 @@
     </ClCompile>
     <ClCompile Include="Fireball.cpp">
       <Filter>Unit\Damager\Fireball</Filter>
+    </ClCompile>
+    <ClCompile Include="Plant.cpp">
+      <Filter>Unit\Mob\Plant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +283,9 @@
     </ClInclude>
     <ClInclude Include="Fireball.h">
       <Filter>Unit\Damager\Fireball</Filter>
+    </ClInclude>
+    <ClInclude Include="Plant.h">
+      <Filter>Unit\Mob\Plant</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

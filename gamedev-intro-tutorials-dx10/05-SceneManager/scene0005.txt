@@ -7,17 +7,18 @@ brick.txt
 question_brick.txt
 goomba.txt
 fireball.txt
+plant.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 4 =coin
-# 5 = platform, 6= pipe, 7=question brick, 8 = ghostplatform
+# 5 = platform, 6= pipe, 7=question brick, 8 = ghostplatform, 10 = plant
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
 0	1800	10
 
-9	1900	80
+10	1900	80
 #GOOMBA
 2	244	160
 2	528	160
