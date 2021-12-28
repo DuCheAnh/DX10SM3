@@ -25,6 +25,7 @@ public:
 	{
 		ay = FIREBALL_GRAVITY;
 		bounces = 10;
+		EntityTag = Tag::Damager;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

@@ -22,7 +22,8 @@ enum class Tag
 	block,
 	pickable,
 	player,
-	tail
+	tail,
+	Damager
 };
 class CGameObject
 {
