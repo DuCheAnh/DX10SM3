@@ -88,6 +88,9 @@
     <Filter Include="Unit\Mob\Plant">
       <UniqueIdentifier>{a041c327-a248-4d43-91a9-fb842a59fd5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Mob\Koopa">
+      <UniqueIdentifier>{9cf667b5-d1f7-41f6-814c-0282a9418412}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -188,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="StraightFireBall.cpp">
       <Filter>Unit\Mob\Plant</Filter>
+    </ClCompile>
+    <ClCompile Include="Koopa.cpp">
+      <Filter>Unit\Mob\Koopa</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +298,9 @@
     </ClInclude>
     <ClInclude Include="StraightFireBall.h">
       <Filter>Unit\Mob\Plant</Filter>
+    </ClInclude>
+    <ClInclude Include="Koopa.h">
+      <Filter>Unit\Mob\Koopa</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

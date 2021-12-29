@@ -11,6 +11,7 @@
 #include "GhostPlatform.h"
 #include "Brick.h"
 #include "Collision.h"
+#include "Koopa.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -46,7 +47,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			gplat->SetBlocking(1);
 			//bounce
-			this->y -= 8;
+			float px, py;
+			gplat->GetPosition(px, py);
+			this->y = py - height;
 		}
 		else
 			gplat->SetBlocking(0);
@@ -73,6 +76,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CGhostPlatform*>(e->obj))
 		OnCollisionWithGPlatform(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -104,6 +109,52 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 					DebugOut(L">>> Mario DIE >>> \n");
 					SetState(MARIO_STATE_DIE);
 				}
+			}
+		}
+	}
+}
+void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+
+	// jump on top >> kill Goomba and deflect a bit 
+
+	if (e->ny < 0)
+	{
+		if (koopa->GetState() != KOOPA_STATE_SHELL)
+		{
+			koopa->SetState(KOOPA_STATE_SHELL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+	}
+	else // hit by Goomba
+	{
+		if (untouchable == 0)
+		{
+			if (koopa->GetState() != KOOPA_STATE_SHELL)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
+			}
+		}
+	}
+	if (e->nx != 0)
+	{
+		if (koopa->GetState() == KOOPA_STATE_SHELL)
+		{
+			if (e->nx > 0) {
+				koopa->GotKick(-1);
+			}
+			else {
+				koopa->GotKick(1);
 			}
 		}
 	}
@@ -388,6 +439,8 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
+		height = bottom - top;
+
 	}
 	else
 	{
@@ -395,6 +448,8 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		top = y - MARIO_SMALL_BBOX_HEIGHT/2;
 		right = left + MARIO_SMALL_BBOX_WIDTH;
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
+		height = bottom - top + 3;
+
 	}
 }
 

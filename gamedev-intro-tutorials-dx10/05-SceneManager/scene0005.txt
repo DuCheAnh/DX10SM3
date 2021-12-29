@@ -6,6 +6,7 @@ cloud.txt
 brick.txt
 question_brick.txt
 goomba.txt
+koopa.txt
 fireball.txt
 plant.txt
 #
@@ -19,6 +20,8 @@ plant.txt
 0	10	10
 
 10	1880	136
+3	200	130
+3	260	130
 #GOOMBA
 2	244	160
 2	528	160

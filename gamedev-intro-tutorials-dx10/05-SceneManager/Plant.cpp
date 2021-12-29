@@ -71,8 +71,6 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			{
 				CGameObject* obj = NULL;
 				float aim = PLANT_AIM_UP;
-				DebugOut(L"this.y %f\n", this->y);
-				DebugOut(L"mario.y %f\n", my);
 
 				if (y > my - 16) {
 					aim = PLANT_AIM_UP;

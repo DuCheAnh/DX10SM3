@@ -7,12 +7,15 @@
 #include "PlayScene.h"
 #include "GameObject.h"
 #include "Fireball.h"
-
+#include "Koopa.h"
+#define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
 void CSampleKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
-
+	CGameObject* obj = NULL;
+	float cx, cy;
+	CGame::GetInstance()->GetCamPos(cx, cy);
 	switch (KeyCode)
 	{
 	case DIK_K:
@@ -32,14 +35,20 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		mario->SetState(MARIO_STATE_DIE);
 		break;
 	case DIK_R: // reset
-		//Reload();
-		CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-		CGameObject* obj = NULL;
-		float cx, cy;
-		mario->GetPosition(cx, cy);
-		obj = new CFireball(cx + 16, cy);
-		((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->AddObject(obj);
+		float mx, my;
+		mario->GetPosition(mx, my);
+		obj = new CFireball(mx + 16, my);
+		CURRENT_SCENE->AddObject(obj);
 		break;
+	case DIK_Q:
+		obj = new CGoomba(cx + SCREEN_WIDTH - 16, 10);
+		CURRENT_SCENE->AddObject(obj);
+		break;
+	case DIK_E:
+		obj = new CKoopa(cx + SCREEN_WIDTH - 16, 10);
+		CURRENT_SCENE->AddObject(obj);
+		break;
+	
 	}
 }
 
