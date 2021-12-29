@@ -186,6 +186,9 @@
     <ClCompile Include="Plant.cpp">
       <Filter>Unit\Mob\Plant</Filter>
     </ClCompile>
+    <ClCompile Include="StraightFireBall.cpp">
+      <Filter>Unit\Mob\Plant</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -285,6 +288,9 @@
       <Filter>Unit\Damager\Fireball</Filter>
     </ClInclude>
     <ClInclude Include="Plant.h">
+      <Filter>Unit\Mob\Plant</Filter>
+    </ClInclude>
+    <ClInclude Include="StraightFireBall.h">
       <Filter>Unit\Mob\Plant</Filter>
     </ClInclude>
   </ItemGroup>

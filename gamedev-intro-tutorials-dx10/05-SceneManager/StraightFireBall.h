@@ -8,24 +8,23 @@
 
 #define FIREBALL_SPEED		0.05f
 #define FIREBALL_DEFLECT_FORCE  0.3f
-#define FIREBALL_BOUNCES 2
 #define FIREBALL_GRAVITY 0.002f
 #define FIREBALL_BBOX_WIDTH  8
 #define FIREBALL_BBOX_HEIGHT 8
 #define ID_ANI_FIREBALL 13000
 
 
-class CFireball : public CGameObject
+class CStraightFireball : public CGameObject
 {
 	float ay;				// acceleration on y 
 	int bounces;
 
 
 public:
-	CFireball(float x, float y) : CGameObject(x, y)
+	CStraightFireball(float x, float y) : CGameObject(x, y)
 	{
 		ay = FIREBALL_GRAVITY;
-		bounces = FIREBALL_BOUNCES;
+		bounces = 2;
 		EntityTag = Tag::Damager;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -40,7 +39,6 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

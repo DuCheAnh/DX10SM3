@@ -4,9 +4,9 @@
 #include "Mario.h"
 #include "Game.h"
 #include "debug.h"
-
+#include "StraightFireBall.h"
 #define MARIO_INS (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()
-
+#define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
 CPlant::CPlant(float x, float y) :CGameObject(x, y)
 {
 	EntityTag = Tag::enemy;
@@ -50,6 +50,7 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		if (GetTickCount64() - timer_start > WAITING_WAIT_TIME)
 		{
+			shot = false;
 			SetState(PLANT_STATE_MOVING_UP);
 		}
 	}
@@ -63,6 +64,15 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	}
 	else if (this->state == PLANT_STATE_SHOOTING)
 	{
+		if (!shot) {
+			if (GetTickCount64() - timer_start > SHOOT_WAIT_TIME / 2)
+			{
+				CGameObject* obj = NULL;
+				obj = new CStraightFireball(x + 16, y);
+				CURRENT_SCENE->AddObject(obj);
+				shot = true;
+			}
+		}
 		if (GetTickCount64() - timer_start > SHOOT_WAIT_TIME)
 		{
 			SetState(PLANT_STATE_MOVING_DOWN);
@@ -84,10 +94,31 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CPlant::Render()
 {
-	int aniId = ID_ANI_PLANT_MOVE_LLEFT;
+	CMario* mario = MARIO_INS;
+	float mx, my;
+	mario->GetPosition(mx, my);
+	int aniId = ID_ANI_PLANT_UP_LLEFT;
+	if (direction == 1) {
+		aniId = ID_ANI_PLANT_UP_LRIGHT;
+	}
+	if (this->state == PLANT_STATE_SHOOTING)
 	if (direction == 1)
 	{
-		aniId = ID_ANI_PLANT_MOVE_LRIGHT;
+		if (this->y > my){
+			aniId = ID_ANI_PLANT_UP_LRIGHT;
+		}
+		else {
+			aniId = ID_ANI_PLANT_DOWN_LRIGHT;
+		}
+	}
+	else
+	{
+		if (this->y > my) {
+			aniId = ID_ANI_PLANT_UP_LLEFT;
+		}
+		else {
+			aniId = ID_ANI_PLANT_DOWN_LLEFT;
+		}
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();

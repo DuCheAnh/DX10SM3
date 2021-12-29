@@ -5,6 +5,8 @@
 #include "Game.h"
 #include "Collision.h"
 
+#include "Plant.h"
+
 void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
@@ -21,12 +23,27 @@ void CFireball::OnNoCollision(DWORD dt)
 
 void CFireball::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (e->ny < 0)
+	if (dynamic_cast<CPlant*>(e->obj))
+		OnCollisionWithPlant(e);
+	else if (e->nx != 0)
+	{
+		bounces = 0;
+	}
+	else if (e->ny < 0)
 	{
 		vy = -FIREBALL_DEFLECT_FORCE;
 		bounces -= 1;
 	}
+	
 }
+
+void CFireball::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
+	this->isDeleted = true;
+	plant->Destroy();
+}
+
 
 
 void CFireball::Render()
