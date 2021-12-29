@@ -8,8 +8,8 @@
 
 void CStraightFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vx = FIREBALL_SPEED / 1.4;
-	vy = FIREBALL_SPEED / 1.4;
+	vx = FIREBALL_SPEED * direction / 1.4;
+	vy = FIREBALL_SPEED * direction * aim / 1.4;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 

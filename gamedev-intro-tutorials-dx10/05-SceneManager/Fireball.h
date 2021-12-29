@@ -6,9 +6,9 @@
 
 #include "debug.h"
 
-#define FIREBALL_SPEED		0.05f
+#define FIREBALL_SPEED		0.1f
 #define FIREBALL_DEFLECT_FORCE  0.3f
-#define FIREBALL_BOUNCES 2
+#define FIREBALL_BOUNCES 3
 #define FIREBALL_GRAVITY 0.002f
 #define FIREBALL_BBOX_WIDTH  8
 #define FIREBALL_BBOX_HEIGHT 8
@@ -41,6 +41,7 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
+	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

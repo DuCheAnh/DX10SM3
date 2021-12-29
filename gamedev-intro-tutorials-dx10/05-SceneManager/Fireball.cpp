@@ -2,6 +2,7 @@
 #include "debug.h"
 
 #include "Fireball.h"
+#include "Goomba.h"
 #include "Game.h"
 #include "Collision.h"
 
@@ -25,6 +26,8 @@ void CFireball::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CPlant*>(e->obj))
 		OnCollisionWithPlant(e);
+	if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
 	else if (e->nx != 0)
 	{
 		bounces = 0;
@@ -41,7 +44,14 @@ void CFireball::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
 	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
 	this->isDeleted = true;
-	plant->Destroy();
+	plant->Delete();
+}
+
+void CFireball::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+	this->isDeleted = true;
+	goomba->SetState(GOOMBA_STATE_SHOT);
 }
 
 

@@ -16,7 +16,7 @@ plant.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	1800	10
+0	10	10
 
 10	1880	136
 #GOOMBA

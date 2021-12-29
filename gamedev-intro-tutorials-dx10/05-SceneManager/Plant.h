@@ -19,6 +19,10 @@
 
 #define PLANT_MOVING_DISTANCE 32
 #define PLANT_MOVING_SPEED 0.02
+
+#define PLANT_AIM_UP -1
+#define PLANT_AIM_MID 0.5
+#define PLANT_AIM_DOWN 1
 class CPlant : public CGameObject
 {
 protected:
@@ -26,6 +30,7 @@ protected:
 	float distance;
 	int direction = -1;
 	bool shot = false;
+	float start_x, start_y;
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();

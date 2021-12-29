@@ -5,8 +5,9 @@ CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 	this->ax = 0;
 	this->ay = GOOMBA_GRAVITY;
 	die_start = -1;
+	shot = false;
 	SetState(GOOMBA_STATE_WALKING);
-	EntityTag = Tag::enemy;
+	EntityTag = Tag::Enemy;
 }
 
 void CGoomba::GetBoundingBox(float &left, float &top, float &right, float &bottom)
@@ -58,6 +59,14 @@ void CGoomba::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		isDeleted = true;
 		return;
 	}
+	if (state == GOOMBA_STATE_SHOT && !shot) {
+		vy -= GOOMBA_JUMP_POWER;
+		shot = true;
+	}
+	if (shot && (GetTickCount64() - die_start > GOOMBA_SHOT_TIMEOUT))
+	{
+		isDeleted =true;
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -71,9 +80,13 @@ void CGoomba::Render()
 	{
 		aniId = ID_ANI_GOOMBA_DIE;
 	}
+	else if (state == GOOMBA_STATE_SHOT)
+	{
+		aniId = ID_ANI_GOOMBA_SHOT;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)
@@ -87,6 +100,12 @@ void CGoomba::SetState(int state)
 			vx = 0;
 			vy = 0;
 			ay = 0; 
+			break;
+		case GOOMBA_STATE_SHOT:
+			die_start = GetTickCount64();
+			vx = 0;
+			ay = 0.0015f;
+			vy = 0;
 			break;
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;

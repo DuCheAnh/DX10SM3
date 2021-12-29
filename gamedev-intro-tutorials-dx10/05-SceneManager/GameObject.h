@@ -17,7 +17,7 @@ using namespace std;
 enum class Tag
 {
 	ghostplatform,
-	enemy,
+	Enemy,
 	portal,
 	block,
 	pickable,
@@ -49,7 +49,7 @@ public:
 	void GetSpeed(float &vx, float &vy) { vx = this->vx; vy = this->vy; }
 
 	int GetState() { return this->state; }
-	virtual void Delete() { isDeleted = true;  }
+	void Delete() { isDeleted = true;  }
 	bool IsDeleted() { return isDeleted; }
 
 	void RenderBoundingBox();

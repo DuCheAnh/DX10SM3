@@ -18,14 +18,18 @@ class CStraightFireball : public CGameObject
 {
 	float ay;				// acceleration on y 
 	int bounces;
-
+	float direction;
+	float aim = 1;
 
 public:
-	CStraightFireball(float x, float y) : CGameObject(x, y)
+	CStraightFireball(float x, float y, float dir, float aim_at) : CGameObject(x, y)
 	{
 		ay = FIREBALL_GRAVITY;
 		bounces = 2;
+		direction = dir;
+		aim = aim_at;
 		EntityTag = Tag::Damager;
+
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

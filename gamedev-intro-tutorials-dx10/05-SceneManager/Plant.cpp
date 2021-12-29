@@ -9,7 +9,9 @@
 #define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
 CPlant::CPlant(float x, float y) :CGameObject(x, y)
 {
-	EntityTag = Tag::enemy;
+	start_x = x;
+	start_y = y;
+	EntityTag = Tag::Enemy;
 	SetState(PLANT_STATE_WAITING);
 	distance = 0;
 }
@@ -68,7 +70,21 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			if (GetTickCount64() - timer_start > SHOOT_WAIT_TIME / 2)
 			{
 				CGameObject* obj = NULL;
-				obj = new CStraightFireball(x + 16, y);
+				float aim = PLANT_AIM_UP;
+				DebugOut(L"this.y %f\n", this->y);
+				DebugOut(L"mario.y %f\n", my);
+
+				if (y > my - 16) {
+					aim = PLANT_AIM_UP;
+				}
+
+				else if (y > my -24) {
+					aim = PLANT_AIM_MID;
+				}
+				else if (y < my) {
+					aim = PLANT_AIM_DOWN;
+				}
+				obj = new CStraightFireball(x + 16*direction, y, direction,aim*direction);
 				CURRENT_SCENE->AddObject(obj);
 				shot = true;
 			}
@@ -104,7 +120,7 @@ void CPlant::Render()
 	if (this->state == PLANT_STATE_SHOOTING)
 	if (direction == 1)
 	{
-		if (this->y > my){
+		if (this->y > my - 16){
 			aniId = ID_ANI_PLANT_UP_LRIGHT;
 		}
 		else {
@@ -113,7 +129,7 @@ void CPlant::Render()
 	}
 	else
 	{
-		if (this->y > my) {
+		if (this->y > my - 16) {
 			aniId = ID_ANI_PLANT_UP_LLEFT;
 		}
 		else {
