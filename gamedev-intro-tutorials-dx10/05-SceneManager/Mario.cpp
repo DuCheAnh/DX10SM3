@@ -3,7 +3,7 @@
 
 #include "Mario.h"
 #include "Game.h"
-
+#include "PlayScene.h"
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
@@ -15,10 +15,26 @@
 #include "StraightFireBall.h"
 #include "Plant.h"
 #include "EatingPlant.h"
+#include "Fireball.h"
+#define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
+
+void CMario::Shoot() {
+	if (level == MARIO_LEVEL_FIRE) {
+		CGameObject* obj = NULL;
+		obj = new CFireball(x + 16 * nx, y, nx);
+		CURRENT_SCENE->AddObject(obj);
+	}
+}
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
+	if (slow_falling)
+	{
+		vy = 0.04f;
+	}
+	if (GetTickCount64() - slow_timer > MARIO_SLOW_TIME)
+		slow_falling = false;
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
@@ -364,6 +380,67 @@ int CMario::GetAniIdBig()
 
 	return aniId;
 }
+//
+// Get animdation ID for Fire Mario
+//
+int CMario::GetAniIdFire()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_FIREMARIO_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_FIREMARIO_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_FIREMARIO_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_FIREMARIO_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_FIREMARIO_SIT_RIGHT;
+			else
+				aniId = ID_ANI_FIREMARIO_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_FIREMARIO_IDLE_RIGHT;
+				else aniId = ID_ANI_FIREMARIO_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_FIREMARIO_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_FIREMARIO_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_FIREMARIO_WALKING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_FIREMARIO_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_FIREMARIO_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_FIREMARIO_WALKING_LEFT;
+			}
+
+
+	if (aniId == -1) aniId = ID_ANI_FIREMARIO_IDLE_RIGHT;
+
+	return aniId;
+}
 
 void CMario::Render()
 {
@@ -372,6 +449,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (level == MARIO_LEVEL_FIRE)
+		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig(); 
 	else if (level == MARIO_LEVEL_SMALL)
@@ -466,7 +545,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (level==MARIO_LEVEL_BIG)
+	if (level>=MARIO_LEVEL_BIG)
 	{
 		if (isSitting)
 		{

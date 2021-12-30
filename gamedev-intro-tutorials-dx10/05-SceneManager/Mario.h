@@ -33,9 +33,37 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
+#define MARIO_STATE_SHOOT 602
 
 #pragma region ANIMATION_ID
 
+
+//FIRE
+#define ID_ANI_FIREMARIO_IDLE_RIGHT 62100
+#define ID_ANI_FIREMARIO_IDLE_LEFT 62200
+
+#define ID_ANI_FIREMARIO_WALKING_RIGHT 62300
+#define ID_ANI_FIREMARIO_WALKING_LEFT 62400
+			   
+#define ID_ANI_FIREMARIO_RUNNING_RIGHT 62500
+#define ID_ANI_FIREMARIO_RUNNING_LEFT 62600
+			   
+#define ID_ANI_FIREMARIO_JUMP_WALK_RIGHT 62700
+#define ID_ANI_FIREMARIO_JUMP_WALK_LEFT 62800
+			   
+#define ID_ANI_FIREMARIO_JUMP_RUN_RIGHT	62900
+#define ID_ANI_FIREMARIO_JUMP_RUN_LEFT 63000
+			   
+#define ID_ANI_FIREMARIO_SIT_RIGHT 63100
+#define ID_ANI_FIREMARIO_SIT_LEFT 63200
+			   
+#define ID_ANI_FIREMARIO_BRACE_RIGHT 63300
+#define ID_ANI_FIREMARIO_BRACE_LEFT 63400
+#define ID_ANI_FIREMARIO_SHOOT_LEFT 63500
+#define ID_ANI_FIREMARIO_SHOOT_RIGHT 63600
+			   
+#define ID_ANI_FIREMARIO_DIE 999
+//BIG
 #define ID_ANI_MARIO_IDLE_RIGHT 400
 #define ID_ANI_MARIO_IDLE_LEFT 401
 
@@ -87,6 +115,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define	MARIO_LEVEL_FIRE	3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -100,6 +129,7 @@
 
 
 #define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_SLOW_TIME 300
 
 class CMario : public CGameObject
 {
@@ -107,9 +137,11 @@ class CMario : public CGameObject
 	float maxVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
-	float height;
+	float height = 0;
 	int level; 
 	int untouchable; 
+	int slow_falling = false;
+	ULONGLONG slow_timer;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
@@ -125,6 +157,7 @@ class CMario : public CGameObject
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdFire();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
@@ -144,12 +177,12 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
-
+	void SlowFall() { slow_falling = true; slow_timer = GetTickCount64(); }
 	int IsCollidable()
 	{ 
 		return (state != MARIO_STATE_DIE); 
 	}
-
+	void Shoot();
 	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
 
 	void OnNoCollision(DWORD dt);

@@ -6,7 +6,7 @@
 
 #include "debug.h"
 
-#define FIREBALL_SPEED		0.1f
+#define FIREBALL_SPEED		0.2f
 #define FIREBALL_DEFLECT_FORCE  0.3f
 #define FIREBALL_BOUNCES 3
 #define FIREBALL_GRAVITY 0.002f
@@ -19,12 +19,13 @@ class CFireball : public CGameObject
 {
 	float ay;				// acceleration on y 
 	int bounces;
-
+	float dir;
 
 public:
-	CFireball(float x, float y) : CGameObject(x, y)
+	CFireball(float x, float y, float direction) : CGameObject(x, y)
 	{
 		ay = FIREBALL_GRAVITY;
+		dir = direction;
 		bounces = FIREBALL_BOUNCES;
 		EntityTag = Tag::Damager;
 	}

@@ -34,11 +34,14 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_0:
 		mario->SetState(MARIO_STATE_DIE);
 		break;
-	case DIK_R: // reset
-		float mx, my;
-		mario->GetPosition(mx, my);
-		obj = new CFireball(mx + 16, my);
-		CURRENT_SCENE->AddObject(obj);
+	case DIK_3:
+		mario->SetLevel(MARIO_LEVEL_FIRE);
+		break;
+	case DIK_A: // reset
+		mario->Shoot();
+		break;
+	case DIK_Z: // reset
+		mario->SlowFall();
 		break;
 	case DIK_Q:
 		obj = new CGoomba(cx + SCREEN_WIDTH - 16, 10);

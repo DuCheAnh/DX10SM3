@@ -11,7 +11,7 @@
 void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
-	vx = FIREBALL_SPEED;
+	vx = FIREBALL_SPEED*dir;
 	if (bounces < 1) isDeleted = true;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

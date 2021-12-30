@@ -134,8 +134,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break; 
 	}
 
-	case 9: obj = new CFireball(x, y); break;
-
 	case OBJECT_TYPE_PLATFORM:
 	{
 
