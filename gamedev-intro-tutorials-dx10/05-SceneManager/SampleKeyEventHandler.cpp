@@ -24,6 +24,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_JUMP);
+		mario->SlowFall();
 		break;
 	case DIK_1:
 		mario->SetLevel(MARIO_LEVEL_SMALL);
@@ -39,9 +40,10 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	case DIK_A: // reset
 		mario->Shoot();
-		break;
-	case DIK_Z: // reset
-		mario->SlowFall();
+		break;	
+
+	case DIK_4: // reset
+		mario->SetLevel(MARIO_LEVEL_RACOON);
 		break;
 	case DIK_Q:
 		obj = new CGoomba(cx + SCREEN_WIDTH - 16, 10);

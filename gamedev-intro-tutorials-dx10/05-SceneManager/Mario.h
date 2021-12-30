@@ -38,6 +38,34 @@
 #pragma region ANIMATION_ID
 
 
+//RACOON
+#define ID_ANI_RACOONMARIO_IDLE_RIGHT 65000
+#define ID_ANI_RACOONMARIO_IDLE_LEFT 65100
+			   
+#define ID_ANI_RACOONMARIO_WALKING_RIGHT 65200
+#define ID_ANI_RACOONMARIO_WALKING_LEFT 65300
+			   
+#define ID_ANI_RACOONMARIO_RUNNING_RIGHT 65400
+#define ID_ANI_RACOONMARIO_RUNNING_LEFT 65500
+			   
+#define ID_ANI_RACOONMARIO_JUMP_WALK_RIGHT 65600
+#define ID_ANI_RACOONMARIO_JUMP_WALK_LEFT 65700
+			   
+#define ID_ANI_RACOONMARIO_JUMP_RUN_RIGHT	65800
+#define ID_ANI_RACOONMARIO_JUMP_RUN_LEFT 65900
+			   
+#define ID_ANI_RACOONMARIO_SIT_RIGHT 66000
+#define ID_ANI_RACOONMARIO_SIT_LEFT 66100
+			   
+#define ID_ANI_RACOONMARIO_BRACE_RIGHT 66200
+#define ID_ANI_RACOONMARIO_BRACE_LEFT 66300
+
+#define ID_ANI_RACOONMARIO_SLOWFALL_RIGHT 66400
+#define ID_ANI_RACOONMARIO_SLOWFALL_LEFT 66500
+
+			   
+#define ID_ANI_RACOONMARIO_DIE 999
+
 //FIRE
 #define ID_ANI_FIREMARIO_IDLE_RIGHT 62100
 #define ID_ANI_FIREMARIO_IDLE_LEFT 62200
@@ -116,6 +144,7 @@
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
 #define	MARIO_LEVEL_FIRE	3
+#define	MARIO_LEVEL_RACOON	4
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -140,8 +169,10 @@ class CMario : public CGameObject
 	float height = 0;
 	int level; 
 	int untouchable; 
-	int slow_falling = false;
+	int slow_falling;
+	int flying;
 	ULONGLONG slow_timer;
+	ULONGLONG fly_timer;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
@@ -158,6 +189,7 @@ class CMario : public CGameObject
 	int GetAniIdBig();
 	int GetAniIdSmall();
 	int GetAniIdFire();
+	int GetAniIdRacoon();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
@@ -166,10 +198,14 @@ public:
 		maxVx = 0.0f;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
+		slow_falling = false;
+		flying = false;
 		EntityTag = Tag::player;
 		level = MARIO_LEVEL_BIG;
 		untouchable = 0;
 		untouchable_start = -1;
+		slow_timer = -1;
+		fly_timer = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -177,7 +213,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
-	void SlowFall() { slow_falling = true; slow_timer = GetTickCount64(); }
+	void SlowFall();
 	int IsCollidable()
 	{ 
 		return (state != MARIO_STATE_DIE); 

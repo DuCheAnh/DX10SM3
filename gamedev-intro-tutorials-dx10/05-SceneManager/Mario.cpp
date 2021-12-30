@@ -25,16 +25,42 @@ void CMario::Shoot() {
 		CURRENT_SCENE->AddObject(obj);
 	}
 }
+void CMario::SlowFall() {
+	if (!isOnPlatform && level == MARIO_LEVEL_RACOON) {
+		if (abs(vx) != MARIO_RUNNING_SPEED) {
+			slow_falling = true;
+			slow_timer = GetTickCount64();
+
+		}
+		else
+		{
+			flying = true;
+			fly_timer = GetTickCount64();
+		}
+
+	}
+}
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	if (slow_falling)
+	if (flying)
+	{
+		vy = -0.04f;
+		vx = abs(maxVx)*nx;
+	}
+	else if (slow_falling)
 	{
 		vy = 0.04f;
+		vx = abs(MARIO_WALKING_SPEED)*nx;
 	}
-	if (GetTickCount64() - slow_timer > MARIO_SLOW_TIME)
+	if (GetTickCount64() - slow_timer > MARIO_SLOW_TIME) {
 		slow_falling = false;
+	}	
+	if (GetTickCount64() - fly_timer > MARIO_SLOW_TIME) {
+		flying = false;
+	}
+
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
@@ -125,7 +151,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					level -= 1;
 					StartUntouchable();
 				}
 				else
@@ -143,7 +169,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{
-				level = MARIO_LEVEL_SMALL;
+				level -=1;
 				StartUntouchable();
 			}
 			else
@@ -175,7 +201,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level = MARIO_LEVEL_SMALL;
+					level -= 1;
 					StartUntouchable();
 				}
 				else
@@ -323,6 +349,71 @@ int CMario::GetAniIdSmall()
 //
 // Get animdation ID for big Mario
 //
+int CMario::GetAniIdRacoon()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_RACOONMARIO_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_RACOONMARIO_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_RACOONMARIO_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_RACOONMARIO_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_RACOONMARIO_SIT_RIGHT;
+			else
+				aniId = ID_ANI_RACOONMARIO_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_RACOONMARIO_IDLE_RIGHT;
+				else aniId = ID_ANI_RACOONMARIO_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_RACOONMARIO_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_RACOONMARIO_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_RACOONMARIO_WALKING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_RACOONMARIO_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_RACOONMARIO_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_RACOONMARIO_WALKING_LEFT;
+			}
+
+	if (aniId == -1) aniId = ID_ANI_RACOONMARIO_IDLE_RIGHT;
+
+	if (slow_falling) {
+		if (nx < 0)
+			aniId = ID_ANI_RACOONMARIO_SLOWFALL_LEFT;
+		else
+			aniId = ID_ANI_RACOONMARIO_SLOWFALL_RIGHT;
+	}
+	return aniId;
+}//
+// Get animdation ID for big Mario
+//
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;
@@ -449,6 +540,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (level == MARIO_LEVEL_RACOON)
+		aniId = GetAniIdRacoon();
 	else if (level == MARIO_LEVEL_FIRE)
 		aniId = GetAniIdFire();
 	else if (level == MARIO_LEVEL_BIG)
