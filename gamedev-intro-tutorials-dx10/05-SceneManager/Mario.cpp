@@ -12,6 +12,8 @@
 #include "Brick.h"
 #include "Collision.h"
 #include "Koopa.h"
+#include "StraightFireBall.h"
+#include "Plant.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -78,6 +80,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGPlatform(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CPlant*>(e->obj))
+		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CStraightFireball*>(e->obj))
+		OnCollisionWithPlant(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -113,6 +119,22 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		}
 	}
 }
+void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+		if (untouchable == 0)
+		{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
+		}
+}
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
@@ -131,7 +153,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (untouchable == 0)
 		{
-			if (koopa->GetState() != KOOPA_STATE_SHELL)
+			if (koopa->GetState() != KOOPA_STATE_SHELL && koopa->GetState()!= KOOPA_STATE_SHELL_HOLDING)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -150,11 +172,30 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (koopa->GetState() == KOOPA_STATE_SHELL)
 		{
-			if (e->nx > 0) {
-				koopa->GotKick(-1);
+			if (state == MARIO_STATE_RUNNING_LEFT || state == MARIO_STATE_RUNNING_RIGHT)
+			{
+				koopa->SetState(KOOPA_STATE_SHELL_HOLDING);
 			}
 			else {
-				koopa->GotKick(1);
+				if (e->nx > 0) {
+					koopa->GotKick(-1);
+				}
+				else {
+					koopa->GotKick(1);
+				}
+			}
+		}
+		else if (koopa->GetState() == KOOPA_STATE_SHELL_HOLDING)
+		{
+			if (state != MARIO_STATE_RUNNING_LEFT && state != MARIO_STATE_RUNNING_RIGHT && state != MARIO_STATE_JUMP && state!= MARIO_STATE_RELEASE_JUMP)
+			{
+				koopa->SetState(KOOPA_STATE_SHELL);
+				if (e->nx > 0) {
+					koopa->GotKick(-1);
+				}
+				else {
+					koopa->GotKick(1);
+				}
 			}
 		}
 	}
@@ -330,7 +371,7 @@ void CMario::Render()
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
 	else if (level == MARIO_LEVEL_BIG)
-		aniId = GetAniIdBig();
+		aniId = GetAniIdBig(); 
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 

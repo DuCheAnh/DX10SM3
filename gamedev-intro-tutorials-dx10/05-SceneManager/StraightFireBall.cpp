@@ -10,18 +10,19 @@ void CStraightFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vx = FIREBALL_SPEED * direction / 1.4;
 	vy = FIREBALL_SPEED * direction * aim / 1.4;
+	x += vx * dt;
+	y += vy * dt;
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
 }
 
 void CStraightFireball::OnNoCollision(DWORD dt)
 {
-	x += vx * dt;
-	y += vy * dt;
+
 }
 
 void CStraightFireball::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	this->isDeleted = true;
 }
 
 
@@ -32,7 +33,7 @@ void CStraightFireball::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_FIREBALL)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 
 }

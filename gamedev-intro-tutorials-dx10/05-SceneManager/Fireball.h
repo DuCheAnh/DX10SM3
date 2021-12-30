@@ -42,6 +42,7 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

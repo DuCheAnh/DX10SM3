@@ -116,6 +116,7 @@ class CMario : public CGameObject
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithQBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithGPlatform(LPCOLLISIONEVENT e);
@@ -139,6 +140,7 @@ public:
 		isOnPlatform = false;
 		coin = 0;
 	}
+	int GetDirection() { return nx; }
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);

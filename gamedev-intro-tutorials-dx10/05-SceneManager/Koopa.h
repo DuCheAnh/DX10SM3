@@ -19,10 +19,11 @@
 #define KOOPA_STATE_SHOT 300
 #define KOOPA_STATE_SHELL 400
 #define KOOPA_STATE_SHELL_MOVING 500
+#define KOOPA_STATE_SHELL_HOLDING 600
 
 #define ID_ANI_KOOPA_WALKING 35100
 #define ID_ANI_KOOPA_DIE 5001
-#define ID_ANI_KOOPA_SHOT 5002
+#define ID_ANI_KOOPA_SHOT 35400
 #define ID_ANI_KOOPA_SHELL 35200
 #define ID_ANI_KOOPA_SHELL_MOVING 35300
 
@@ -39,7 +40,7 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { return !shot; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 

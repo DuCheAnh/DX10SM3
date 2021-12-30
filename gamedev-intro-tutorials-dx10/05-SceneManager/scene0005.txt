@@ -8,6 +8,7 @@ question_brick.txt
 goomba.txt
 koopa.txt
 fireball.txt
+straightfireball.txt
 plant.txt
 #
 [OBJECTS]
@@ -19,7 +20,7 @@ plant.txt
 # MARIO
 0	10	10
 
-10	1880	136
+10	360	139
 3	200	130
 3	260	130
 #GOOMBA
