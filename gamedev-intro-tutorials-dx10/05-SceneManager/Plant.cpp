@@ -7,10 +7,11 @@
 #include "StraightFireBall.h"
 #define MARIO_INS (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()
 #define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
-CPlant::CPlant(float x, float y) :CGameObject(x, y)
+CPlant::CPlant(float x, float y, int type) :CGameObject(x, y)
 {
 	start_x = x;
 	start_y = y;
+	plant_type = type;
 	EntityTag = Tag::Enemy;
 	SetState(PLANT_STATE_WAITING);
 	distance = 0;
@@ -82,7 +83,7 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (y < my) {
 					aim = PLANT_AIM_DOWN;
 				}
-				obj = new CStraightFireball(x + 16*direction, y, direction,aim*direction);
+				obj = new CStraightFireball(x + 16*direction, y - 5, direction,aim*direction);
 				CURRENT_SCENE->AddObject(obj);
 				shot = true;
 			}
@@ -112,27 +113,55 @@ void CPlant::Render()
 	float mx, my;
 	mario->GetPosition(mx, my);
 	int aniId = ID_ANI_PLANT_UP_LLEFT;
-	if (direction == 1) {
-		aniId = ID_ANI_PLANT_UP_LRIGHT;
-	}
-	if (this->state == PLANT_STATE_SHOOTING)
-	if (direction == 1)
-	{
-		if (this->y > my - 16){
+	if (plant_type == 0) {
+		if (direction == 1) {
 			aniId = ID_ANI_PLANT_UP_LRIGHT;
 		}
-		else {
-			aniId = ID_ANI_PLANT_DOWN_LRIGHT;
-		}
+		if (this->state == PLANT_STATE_SHOOTING)
+			if (direction == 1)
+			{
+				if (this->y > my - 16) {
+					aniId = ID_ANI_PLANT_UP_LRIGHT;
+				}
+				else {
+					aniId = ID_ANI_PLANT_DOWN_LRIGHT;
+				}
+			}
+			else
+			{
+				if (this->y > my - 16) {
+					aniId = ID_ANI_PLANT_UP_LLEFT;
+				}
+				else {
+					aniId = ID_ANI_PLANT_DOWN_LLEFT;
+				}
+			}
 	}
 	else
 	{
-		if (this->y > my - 16) {
-			aniId = ID_ANI_PLANT_UP_LLEFT;
+		aniId = ID_ANI_GREENPLANT_UP_LLEFT;
+		if (direction == 1) {
+			aniId = ID_ANI_GREENPLANT_UP_LRIGHT;
 		}
-		else {
-			aniId = ID_ANI_PLANT_DOWN_LLEFT;
-		}
+		if (this->state == PLANT_STATE_SHOOTING)
+			if (direction == 1)
+			{
+				if (this->y > my - 16) {
+					aniId = ID_ANI_GREENPLANT_UP_LRIGHT;
+				}
+				else {
+					aniId = ID_ANI_GREENPLANT_DOWN_LRIGHT;
+				}
+			}
+			else
+			{
+				if (this->y > my - 16) {
+					aniId = ID_ANI_GREENPLANT_UP_LLEFT;
+				}
+				else {
+					aniId = ID_ANI_GREENPLANT_DOWN_LLEFT;
+				}
+			}
 	}
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();

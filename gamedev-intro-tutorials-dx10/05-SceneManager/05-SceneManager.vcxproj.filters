@@ -195,6 +195,9 @@
     <ClCompile Include="Koopa.cpp">
       <Filter>Unit\Mob\Koopa</Filter>
     </ClCompile>
+    <ClCompile Include="EatingPlant.cpp">
+      <Filter>Unit\Mob\Plant</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -301,6 +304,9 @@
     </ClInclude>
     <ClInclude Include="Koopa.h">
       <Filter>Unit\Mob\Koopa</Filter>
+    </ClInclude>
+    <ClInclude Include="EatingPlant.h">
+      <Filter>Unit\Mob\Plant</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

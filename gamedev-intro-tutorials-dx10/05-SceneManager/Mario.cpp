@@ -14,7 +14,7 @@
 #include "Koopa.h"
 #include "StraightFireBall.h"
 #include "Plant.h"
-
+#include "EatingPlant.h"
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	vy += ay * dt;
@@ -83,6 +83,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CPlant*>(e->obj))
 		OnCollisionWithPlant(e);
 	else if (dynamic_cast<CStraightFireball*>(e->obj))
+		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CEatingPlant*>(e->obj))
 		OnCollisionWithPlant(e);
 }
 
