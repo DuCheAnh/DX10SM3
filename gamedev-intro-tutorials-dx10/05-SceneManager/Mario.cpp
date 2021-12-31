@@ -16,6 +16,7 @@
 #include "Plant.h"
 #include "EatingPlant.h"
 #include "Fireball.h"
+#include "RacoonTail.h"
 #define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
 
 void CMario::Shoot() {
@@ -23,6 +24,11 @@ void CMario::Shoot() {
 		CGameObject* obj = NULL;
 		obj = new CFireball(x + 16 * nx, y, nx);
 		CURRENT_SCENE->AddObject(obj);
+	}
+	else if (level == MARIO_LEVEL_RACOON && GetTickCount64() - tail_attack_timer > MARIO_TAILATTACK_TIME)
+	{
+		tail_attacking = true;
+		tail_attack_timer = GetTickCount64();
 	}
 }
 void CMario::SlowFall() {
@@ -59,6 +65,18 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}	
 	if (GetTickCount64() - fly_timer > MARIO_SLOW_TIME) {
 		flying = false;
+	}
+	if (GetTickCount64() - tail_attack_timer > MARIO_TAILATTACK_TIME)
+	{
+		tail_attacking = false;
+		attacked = false;
+	}	
+	if (GetTickCount64() - tail_attack_timer > 100 && tail_attacking && !attacked )
+	{
+		CGameObject* obj = NULL;
+		attacked = true;
+		obj = new CRacoonTail(x, y + 6, nx);
+		CURRENT_SCENE->AddObject(obj);
 	}
 
 
@@ -403,12 +421,15 @@ int CMario::GetAniIdRacoon()
 			}
 
 	if (aniId == -1) aniId = ID_ANI_RACOONMARIO_IDLE_RIGHT;
-
 	if (slow_falling) {
 		if (nx < 0)
 			aniId = ID_ANI_RACOONMARIO_SLOWFALL_LEFT;
 		else
 			aniId = ID_ANI_RACOONMARIO_SLOWFALL_RIGHT;
+	}
+	else if (tail_attacking)
+	{
+		aniId = ID_ANI_RACOONMARIO_TAILATTACK_RIGHT;
 	}
 	return aniId;
 }//

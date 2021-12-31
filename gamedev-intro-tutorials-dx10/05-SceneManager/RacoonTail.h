@@ -6,28 +6,25 @@
 
 #include "debug.h"
 
-#define FIREBALL_SPEED	0.2f
-#define FIREBALL_DEFLECT_FORCE  0.3f
-#define FIREBALL_BOUNCES 3
-#define FIREBALL_GRAVITY 0.002f
+#define TAIL_SPEED	0.2f
 #define FIREBALL_BBOX_WIDTH  8
 #define FIREBALL_BBOX_HEIGHT 8
-#define ID_ANI_FIREBALL 13000
+#define TAIL_DISTANCE 16
 
-
-class CFireball : public CGameObject
+class CRacoonTail : public CGameObject
 {
 	float ay;				// acceleration on y 
-	int bounces;
 	float dir;
+	float travel_dis;
+	ULONGLONG destroy_timer;
 
 public:
-	CFireball(float x, float y, float direction) : CGameObject(x, y)
+	CRacoonTail(float x, float y, float direction) : CGameObject(x, y)
 	{
-		ay = FIREBALL_GRAVITY;
 		dir = direction;
-		bounces = FIREBALL_BOUNCES;
+		travel_dis = 0;
 		EntityTag = Tag::Damager;
+		destroy_timer = GetTickCount64();
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

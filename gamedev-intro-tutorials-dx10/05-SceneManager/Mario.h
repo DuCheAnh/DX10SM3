@@ -63,6 +63,7 @@
 #define ID_ANI_RACOONMARIO_SLOWFALL_RIGHT 66400
 #define ID_ANI_RACOONMARIO_SLOWFALL_LEFT 66500
 
+#define ID_ANI_RACOONMARIO_TAILATTACK_RIGHT 66600
 			   
 #define ID_ANI_RACOONMARIO_DIE 999
 
@@ -159,6 +160,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_SLOW_TIME 300
+#define MARIO_TAILATTACK_TIME 300
 
 class CMario : public CGameObject
 {
@@ -171,8 +173,11 @@ class CMario : public CGameObject
 	int untouchable; 
 	int slow_falling;
 	int flying;
+	bool tail_attacking;
+	bool attacked;
 	ULONGLONG slow_timer;
 	ULONGLONG fly_timer;
+	ULONGLONG tail_attack_timer;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
@@ -206,6 +211,9 @@ public:
 		untouchable_start = -1;
 		slow_timer = -1;
 		fly_timer = -1;
+		tail_attack_timer = -1;
+		tail_attacking = false;
+		attacked = false;
 		isOnPlatform = false;
 		coin = 0;
 	}

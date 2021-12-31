@@ -91,6 +91,9 @@
     <Filter Include="Unit\Mob\Koopa">
       <UniqueIdentifier>{9cf667b5-d1f7-41f6-814c-0282a9418412}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\Damager\RacoonTail">
+      <UniqueIdentifier>{49d2ced3-4c55-47d5-9420-f117b9cd4827}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -197,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="EatingPlant.cpp">
       <Filter>Unit\Mob\Plant</Filter>
+    </ClCompile>
+    <ClCompile Include="RacoonTail.cpp">
+      <Filter>Unit\Damager\RacoonTail</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -307,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="EatingPlant.h">
       <Filter>Unit\Mob\Plant</Filter>
+    </ClInclude>
+    <ClInclude Include="RacoonTail.h">
+      <Filter>Unit\Damager\RacoonTail</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

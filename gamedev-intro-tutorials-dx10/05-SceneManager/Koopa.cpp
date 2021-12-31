@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "PlayScene.h"
 #include "Mario.h"
+#include "Goomba.h"
 #define MARIO_INS (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()
 
 CKoopa::CKoopa(float x, float y):CGameObject(x, y)
@@ -40,8 +41,14 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CGoomba*>(e->obj)) {
+		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+		if (state == KOOPA_STATE_SHELL_MOVING)
+			goomba->SetState(GOOMBA_STATE_SHOT);
+	}
 	if (!e->obj->IsBlocking()) return; 
 	if (dynamic_cast<CKoopa*>(e->obj)) return; 
+
 
 	if (e->ny != 0 )
 	{
