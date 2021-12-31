@@ -53,6 +53,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		obj = new CKoopa(cx + SCREEN_WIDTH - 16, 10);
 		CURRENT_SCENE->AddObject(obj);
 		break;
+	case DIK_R:
+		CURRENT_SCENE->SwapToCoin();
 	
 	}
 }

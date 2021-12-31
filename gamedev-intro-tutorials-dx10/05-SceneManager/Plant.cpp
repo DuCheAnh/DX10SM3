@@ -83,7 +83,7 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				else if (y < my) {
 					aim = PLANT_AIM_DOWN;
 				}
-				obj = new CStraightFireball(x + 16*direction, y - 5, direction,aim*direction);
+				obj = new CStraightFireball(x + 16*(float)direction, y - 5, (float)direction,aim*(float)direction);
 				CURRENT_SCENE->AddObject(obj);
 				shot = true;
 			}

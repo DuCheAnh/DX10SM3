@@ -22,6 +22,7 @@ public:
 	CRacoonTail(float x, float y, float direction) : CGameObject(x, y)
 	{
 		dir = direction;
+		ay = 0;
 		travel_dis = 0;
 		EntityTag = Tag::Damager;
 		destroy_timer = GetTickCount64();
@@ -41,6 +42,9 @@ public:
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
+	void OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithEatingPlant(LPCOLLISIONEVENT e);
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

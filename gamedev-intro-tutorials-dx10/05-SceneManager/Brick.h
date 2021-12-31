@@ -14,10 +14,11 @@
 #define BRICK_STATE_NORMAL 200
 
 #define BRICK_BREAK_TIME 500
-
+#define BRICK_MOVE_DISTANCE 16
 class CBrick : public CGameObject {
 protected:
 	int is_blocking = 1;
+	float distance_moved = 0;
 	int is_collidable = 1;
 	ULONGLONG break_start;
 public:
@@ -30,4 +31,5 @@ public:
 	virtual int IsCollidable() { return is_collidable; }
 	virtual void SetBlocking(int value) { this->is_blocking = value;}
 	virtual void SetState(int state);
+	void SwapWithCoin();
 };

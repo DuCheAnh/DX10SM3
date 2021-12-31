@@ -7,7 +7,9 @@
 #include "Collision.h"
 #include "Koopa.h"
 #include "Plant.h"
-
+#include "Brick.h"
+#include "QuestionBrick.h"
+#include "EatingPlant.h"
 void CRacoonTail::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vx = TAIL_SPEED * dir;
@@ -19,7 +21,7 @@ void CRacoonTail::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	travel_dis += vx * dt;
-	if (travel_dis > TAIL_DISTANCE)
+	if (abs(travel_dis) > TAIL_DISTANCE)
 	{
 		isDeleted = true;
 	}
@@ -33,34 +35,61 @@ void CRacoonTail::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CQuestionBrick*>(e->obj))
+		OnCollisionWithQuestionBrick(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
+	else if (dynamic_cast<CEatingPlant*>(e->obj))
+		OnCollisionWithEatingPlant(e);
+	this->Delete();
 
 }
 
 void CRacoonTail::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
 	CPlant* plant = dynamic_cast<CPlant*>(e->obj);
-	this->isDeleted = true;
+	plant->Delete();
+}
+void CRacoonTail::OnCollisionWithEatingPlant(LPCOLLISIONEVENT e)
+{
+	CEatingPlant* plant = dynamic_cast<CEatingPlant*>(e->obj);
 	plant->Delete();
 }
 
 void CRacoonTail::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-	this->isDeleted = true;
 	goomba->SetState(GOOMBA_STATE_SHOT);
 }
 void CRacoonTail::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	this->isDeleted = true;
 	koopa->SetState(KOOPA_STATE_SHOT);
+}
+void CRacoonTail::OnCollisionWithQuestionBrick(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+		CQuestionBrick* qb = dynamic_cast<CQuestionBrick*>(e->obj);
+		if (qb->GetState() != QBRICK_STATE_BROKEN)
+			qb->SetState(QBRICK_STATE_BROKEN);
+	}
+
+}
+void CRacoonTail::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<CBrick*>(e->obj)) {
+		CBrick* qb = dynamic_cast<CBrick*>(e->obj);
+		if (qb->GetState() != BRICK_STATE_BROKEN)
+			qb->SetState(BRICK_STATE_BROKEN);
+	}
+
 }
 
 
 
 void CRacoonTail::Render()
 {
-	//RenderBoundingBox();
+RenderBoundingBox();
 }
 
 

@@ -29,8 +29,16 @@ void CBrick::OnCollisionWith(LPCOLLISIONEVENT e)
 void CBrick::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (state == BRICK_STATE_BROKEN)
 	{
-		isDeleted = true;
-		return;
+		
+		if (distance_moved > BRICK_MOVE_DISTANCE)
+		{
+			y += 0.1 * dt;
+			is_blocking = is_collidable = 0;
+		}
+		else {
+			y -= 0.1f * dt;
+			distance_moved += 0.1 * dt;
+		}
 	}
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);

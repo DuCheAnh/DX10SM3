@@ -17,11 +17,14 @@
 #include "Koopa.h"
 #include "Plant.h"
 #include "EatingPlant.h"
+#include "PButton.h"
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
+	map = NULL;
+	mario = NULL;
 	player = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
@@ -127,6 +130,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_QBRICK: obj = new CQuestionBrick(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 	case OBJECT_TYPE_EATINGPLANT: obj = new CEatingPlant(x, y); break;
+	case OBJECT_TYPE_PBUTTON: obj = new CPButton(x, y); break;
 	case OBJECT_TYPE_PLANT: 
 	{
 		int type = (int)atof(tokens[3].c_str());
@@ -268,7 +272,20 @@ void CPlayScene::Load()
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
-
+void CPlayScene::SwapToCoin(){
+	for (size_t i = 1; i < objects.size(); i++)
+	{
+		if (dynamic_cast<CBrick*>(objects[i]))
+		{
+			float tx, ty;
+			objects[i]->GetPosition(tx, ty);
+			CGameObject* obj = NULL;
+			obj = new CCoin(tx, ty);
+			AddObject(obj);
+			objects[i]->Delete();
+		}
+	}
+}
 void CPlayScene::Update(DWORD dt)
 {
 	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
@@ -298,7 +315,7 @@ void CPlayScene::Update(DWORD dt)
 
 	if (cx < 0) cx = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, 208 /*cy*/);
 
 	PurgeDeletedObjects();
 }

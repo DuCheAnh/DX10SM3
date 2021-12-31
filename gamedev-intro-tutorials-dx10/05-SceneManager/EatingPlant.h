@@ -1,8 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define PLANT_BBOX_WIDTH 16
-#define PLANT_BBOX_HEIGHT 32
+#define PLANT_BBOX_WIDTH 14
+#define PLANT_BBOX_HEIGHT 28
 
 #define ID_ANI_EATINGPLANT 37000
 
@@ -16,7 +16,7 @@
 #define SHOOT_WAIT_TIME 3000
 
 #define PLANT_MOVING_DISTANCE 32
-#define PLANT_MOVING_SPEED 0.02
+#define PLANT_MOVING_SPEED 0.02f
 
 class CEatingPlant : public CGameObject
 {

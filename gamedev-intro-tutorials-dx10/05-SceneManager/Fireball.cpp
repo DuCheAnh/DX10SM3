@@ -7,6 +7,7 @@
 #include "Collision.h"
 #include "Koopa.h"
 #include "Plant.h"
+#include "EatingPlant.h"
 
 void CFireball::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
@@ -28,6 +29,8 @@ void CFireball::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlant(e);
 	else if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CEatingPlant*>(e->obj))
+		OnCollisionWithEatingPlant(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
 	else if (e->nx != 0)
@@ -42,6 +45,12 @@ void CFireball::OnCollisionWith(LPCOLLISIONEVENT e)
 	
 }
 
+void CFireball::OnCollisionWithEatingPlant(LPCOLLISIONEVENT e)
+{
+	CEatingPlant* plant = dynamic_cast<CEatingPlant*>(e->obj);
+	this->isDeleted = true;
+	plant->Delete();
+}
 void CFireball::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
 	CPlant* plant = dynamic_cast<CPlant*>(e->obj);

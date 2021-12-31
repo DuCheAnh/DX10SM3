@@ -17,12 +17,14 @@
 #include "EatingPlant.h"
 #include "Fireball.h"
 #include "RacoonTail.h"
+#include "PowerUp.h"
+#include "PButton.h"
 #define CURRENT_SCENE ((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())
 
 void CMario::Shoot() {
 	if (level == MARIO_LEVEL_FIRE) {
 		CGameObject* obj = NULL;
-		obj = new CFireball(x + 16 * nx, y, nx);
+		obj = new CFireball(x + 16 * (float)nx, y, (float)nx);
 		CURRENT_SCENE->AddObject(obj);
 	}
 	else if (level == MARIO_LEVEL_RACOON && GetTickCount64() - tail_attack_timer > MARIO_TAILATTACK_TIME)
@@ -40,6 +42,7 @@ void CMario::SlowFall() {
 		}
 		else
 		{
+			if (!flying) total_fly_timer = GetTickCount64();
 			flying = true;
 			fly_timer = GetTickCount64();
 		}
@@ -66,6 +69,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (GetTickCount64() - fly_timer > MARIO_SLOW_TIME) {
 		flying = false;
 	}
+	if (GetTickCount64() - total_fly_timer > MARIO_MAX_FLY_DURATION && flying)
+	{
+		flying = false;
+		vx = abs(MARIO_WALKING_SPEED) * (float)nx;
+
+	}
 	if (GetTickCount64() - tail_attack_timer > MARIO_TAILATTACK_TIME)
 	{
 		tail_attacking = false;
@@ -75,7 +84,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	{
 		CGameObject* obj = NULL;
 		attacked = true;
-		obj = new CRacoonTail(x, y + 6, nx);
+		obj = new CRacoonTail(x, y + 6, (float)nx);
 		CURRENT_SCENE->AddObject(obj);
 	}
 
@@ -98,6 +107,7 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
+
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -146,6 +156,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlant(e);
 	else if (dynamic_cast<CEatingPlant*>(e->obj))
 		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CPowerUp*>(e->obj))
+		OnCollisionWithPowerUp(e);
+	else if (dynamic_cast<CPButton*>(e->obj))
+		OnCollisionWithPButton(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -169,7 +183,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level -= 1;
+					LevelDown();
 					StartUntouchable();
 				}
 				else
@@ -180,6 +194,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			}
 		}
 	}
+}void CMario::OnCollisionWithPowerUp(LPCOLLISIONEVENT e)
+{
+	CPowerUp* pu = dynamic_cast<CPowerUp*>(e->obj);
+	y -= 8;
+	LevelUp();
+	pu->Delete();
 }
 void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 {
@@ -187,7 +207,7 @@ void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
 		{
 			if (level > MARIO_LEVEL_SMALL)
 			{
-				level -=1;
+				LevelDown();
 				StartUntouchable();
 			}
 			else
@@ -219,7 +239,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
-					level -= 1;
+					LevelDown();
 					StartUntouchable();
 				}
 				else
@@ -281,6 +301,18 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 		if (brick->GetState() != BRICK_STATE_BROKEN) 
 		{
 			brick->SetState(BRICK_STATE_BROKEN);
+		}
+	}
+}
+void CMario::OnCollisionWithPButton(LPCOLLISIONEVENT e)
+{
+	CPButton* button = dynamic_cast<CPButton*>(e->obj);
+	
+	if (e->ny < 0)
+	{
+		if (button->GetState() != QBRICK_STATE_BROKEN)
+		{
+			button->SetState(QBRICK_STATE_BROKEN);
 		}
 	}
 }
@@ -586,15 +618,19 @@ void CMario::SetState(int state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
+		nx = 1;
+
+		if (!isOnPlatform) break;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
-		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
+		nx = -1;
+
+		if (!isOnPlatform) break;
 		maxVx = -MARIO_RUNNING_SPEED;
 		ax = -MARIO_ACCEL_RUN_X;
-		nx = -1;
 		break;
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
@@ -697,5 +733,24 @@ void CMario::SetLevel(int l)
 		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+}
+
+void CMario::LevelUp()
+{
+	level += 1;
+	if (level > 4) level = 4;
+}
+void CMario::LevelDown() {
+	if (level > 2)
+	{
+		level = 2;
+	}
+	else if (level > 1) {
+		level = 1;
+	}
+	else {
+		level = 1;
+		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+	}
 }
 

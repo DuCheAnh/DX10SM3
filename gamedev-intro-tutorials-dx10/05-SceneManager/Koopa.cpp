@@ -3,6 +3,10 @@
 #include "PlayScene.h"
 #include "Mario.h"
 #include "Goomba.h"
+#include "QuestionBrick.h"
+#include "Brick.h"
+#include "EatingPlant.h"
+#include "Plant.h"
 #define MARIO_INS (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer()
 
 CKoopa::CKoopa(float x, float y):CGameObject(x, y)
@@ -46,8 +50,23 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		if (state == KOOPA_STATE_SHELL_MOVING)
 			goomba->SetState(GOOMBA_STATE_SHOT);
 	}
+	else if (dynamic_cast<CKoopa*>(e->obj)) {
+		CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+		if (state == KOOPA_STATE_SHELL_MOVING)
+			koopa->SetState(KOOPA_STATE_SHOT);
+	}
+	else if (dynamic_cast<CPlant*>(e->obj)) {
+		CPlant* plant = dynamic_cast<CPlant*>(e->obj);
+		if (state == KOOPA_STATE_SHELL_MOVING)
+			plant->Delete();
+	}	
+	else if (dynamic_cast<CEatingPlant*>(e->obj)) {
+		CEatingPlant* plant = dynamic_cast<CEatingPlant*>(e->obj);
+		if (state == KOOPA_STATE_SHELL_MOVING)
+			plant->Delete();
+	}
+
 	if (!e->obj->IsBlocking()) return; 
-	if (dynamic_cast<CKoopa*>(e->obj)) return; 
 
 
 	if (e->ny != 0 )
@@ -57,6 +76,16 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+		if (dynamic_cast<CQuestionBrick*>(e->obj)) {
+			CQuestionBrick* qb = dynamic_cast<CQuestionBrick*>(e->obj);
+			if (qb->GetState() != QBRICK_STATE_BROKEN && state == KOOPA_STATE_SHELL_MOVING)
+				qb->SetState(QBRICK_STATE_BROKEN);
+		}
+		if (dynamic_cast<CBrick*>(e->obj)) {
+			CBrick* qb = dynamic_cast<CBrick*>(e->obj);
+			if (qb->GetState() != BRICK_STATE_BROKEN)
+				qb->SetState(BRICK_STATE_BROKEN);
+		}
 	}
 }
 

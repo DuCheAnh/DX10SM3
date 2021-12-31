@@ -15,8 +15,8 @@ class CPlayScene: public CScene
 protected: 
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
-	CMario* mario;
-	Map* map;
+	CMario* mario = NULL;
+	Map* map = NULL;
 	vector<LPGAMEOBJECT> objects;
 
 	void _ParseSection_SPRITES(string line);
@@ -34,7 +34,7 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
-
+	void SwapToCoin();
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	void AddObject(CGameObject* obj) { objects.push_back(obj); }

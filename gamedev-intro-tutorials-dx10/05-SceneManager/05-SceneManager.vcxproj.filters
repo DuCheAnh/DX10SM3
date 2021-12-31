@@ -94,6 +94,12 @@
     <Filter Include="Unit\Damager\RacoonTail">
       <UniqueIdentifier>{49d2ced3-4c55-47d5-9420-f117b9cd4827}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Unit\CollidableObject\PowerUp">
+      <UniqueIdentifier>{900b885a-5ab0-4314-b750-410828dfbc24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Unit\CollidableObject\PButton">
+      <UniqueIdentifier>{4d80caf7-a598-42f3-ba44-acdd7d7d0b5a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -203,6 +209,12 @@
     </ClCompile>
     <ClCompile Include="RacoonTail.cpp">
       <Filter>Unit\Damager\RacoonTail</Filter>
+    </ClCompile>
+    <ClCompile Include="PowerUp.cpp">
+      <Filter>Unit\CollidableObject\PowerUp</Filter>
+    </ClCompile>
+    <ClCompile Include="PButton.cpp">
+      <Filter>Unit\CollidableObject\PButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -316,6 +328,12 @@
     </ClInclude>
     <ClInclude Include="RacoonTail.h">
       <Filter>Unit\Damager\RacoonTail</Filter>
+    </ClInclude>
+    <ClInclude Include="PowerUp.h">
+      <Filter>Unit\CollidableObject\PowerUp</Filter>
+    </ClInclude>
+    <ClInclude Include="PButton.h">
+      <Filter>Unit\CollidableObject\PButton</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

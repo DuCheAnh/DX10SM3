@@ -157,10 +157,12 @@
 #define MARIO_SMALL_BBOX_WIDTH  13
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
-
+#define MARIO_LIMIT_LEFT 0
+#define MARIO_LIMIT_TOP -50
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_SLOW_TIME 300
 #define MARIO_TAILATTACK_TIME 300
+#define MARIO_MAX_FLY_DURATION 3000
 
 class CMario : public CGameObject
 {
@@ -177,6 +179,7 @@ class CMario : public CGameObject
 	bool attacked;
 	ULONGLONG slow_timer;
 	ULONGLONG fly_timer;
+	ULONGLONG total_fly_timer;
 	ULONGLONG tail_attack_timer;
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
@@ -187,9 +190,11 @@ class CMario : public CGameObject
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
 	void OnCollisionWithQBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+	void OnCollisionWithPButton(LPCOLLISIONEVENT e);
 	void OnCollisionWithGPlatform(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
+	void OnCollisionWithPowerUp(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
@@ -212,6 +217,7 @@ public:
 		slow_timer = -1;
 		fly_timer = -1;
 		tail_attack_timer = -1;
+		total_fly_timer = 0;
 		tail_attacking = false;
 		attacked = false;
 		isOnPlatform = false;
@@ -231,7 +237,8 @@ public:
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
-
+	void LevelUp();
+	void LevelDown();
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
